@@ -355,7 +355,12 @@ int GetMemoryProtectPageSize() {
 	if (sys_info.dwPageSize == 0)
 		GetSystemInfo(&sys_info);
 	return sys_info.dwPageSize;
-#endif
+#else
+	static int pageSize = 0;
+	if (!pageSize) {
+		pageSize = sysconf(_SC_PAGE_SIZE);
+	}
 	return MEM_PAGE_SIZE;
+#endif
 }
 #endif // !PPSSPP_PLATFORM(SWITCH)
